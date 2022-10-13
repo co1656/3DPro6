@@ -40,10 +40,10 @@ Vertex transformedCircle[360];  // 화면에 그려질 원
 Transform transform;  //world 행렬이 될 transform
 
 //<문제>////////전역변수 쓰는곳////////////////////////////////////////////////////////////
-
-        
-
-
+float T;
+float R;
+float S;
+bool Big = true;
  //////////////////////////////////////////////////////////////////////////////////////////
 
 void Init();
@@ -145,6 +145,44 @@ void Update()
 {
     while (!glfwWindowShouldClose(window))
     {
+        T += 0.001f;
+        R += 1.0f;
+        transform.translate = glm::mat3(
+            1, 0, 0,
+            0, 1, 0,
+            T, 0, 1
+        );
+        transform.rotation = glm::mat3(
+            glm::cos(glm::radians(R)), -glm::sin(glm::radians(R)), 0,
+            glm::sin(glm::radians(R)), glm::cos(glm::radians(R)), 0,
+            0, 0, 1
+        );
+        if (Big == true)
+        {
+            transform.scale = glm::mat3(
+                1+S, 0, 0,
+                0, 1+S, 0,
+                0, 0, 1
+            );
+            S += 0.01f;
+            if (S > 0.3f)
+            {
+                Big = false;
+            }
+        }
+        if (Big == false)
+        {
+            transform.scale = glm::mat3(
+                1 + S, 0, 0,
+                0, 1 + S, 0,
+                0, 0, 1
+            );
+            S -= 0.01f;
+            if (S < -0.3f)
+            {
+                Big = true;
+            }
+        }
         //Update로직
         //<문제>//////////////////////////////////////////////////////////////////////////////////
 
