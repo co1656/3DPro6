@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "MuSoenMath.h"
 
 
 #pragma comment(lib, "OpenGL32")
@@ -20,15 +21,15 @@ bool isFirstFrame = true;
 
 struct Vertex
 {
-    glm::vec3 pos;
+    vec3 pos;
     float r, g, b, a;
 };
 
 struct Transform
 {
-    glm::mat3 translate;
-    glm::mat3 scale;
-    glm::mat3 rotation;
+    mat3 translate;
+    mat3 scale;
+    mat3 rotation;
 };
 
 
@@ -117,17 +118,17 @@ void Init()
 
 
     //트랜스폼 초기화 (기본형 제공)
-    transform.translate = glm::mat3(
+    transform.translate = mat3(
         1, 0, 0,
         0, 1, 0,
         0, 0, 1
     );
-    transform.rotation = glm::mat3(
+    transform.rotation = mat3(
         glm::cos(glm::radians(0.0f)), -glm::sin(glm::radians(0.0f)), 0,
         glm::sin(glm::radians(0.0f)), glm::cos(glm::radians(0.0f)), 0,
         0, 0, 1
     );
-    transform.scale = glm::mat3(
+    transform.scale = mat3(
         1, 0, 0,
         0, 1, 0,
         0, 0, 1
@@ -147,19 +148,18 @@ void Update()
     {
         T += 0.001f;
         R += 1.0f;
-        transform.translate = glm::mat3(
+        transform.translate = mat3(
             1, 0, 0,
             0, 1, 0,
             T, 0, 1
         );
-        transform.rotation = glm::mat3(
-            glm::cos(glm::radians(R)), -glm::sin(glm::radians(R)), 0,
-            glm::sin(glm::radians(R)), glm::cos(glm::radians(R)), 0,
-            0, 0, 1
-        );
+        transform.rotation = mat3(
+            cos(3.14 * R / 180), -sin(3.14 * R / 180), 0,
+            sin(3.14 * R / 180), cos(3.14 * R / 180), 0,
+            0, 0, 1);
         if (Big == true)
         {
-            transform.scale = glm::mat3(
+            transform.scale = mat3(
                 1+S, 0, 0,
                 0, 1+S, 0,
                 0, 0, 1
@@ -172,7 +172,7 @@ void Update()
         }
         if (Big == false)
         {
-            transform.scale = glm::mat3(
+            transform.scale = mat3(
                 1 + S, 0, 0,
                 0, 1 + S, 0,
                 0, 0, 1
@@ -196,12 +196,12 @@ void Update()
         
         for (int i = 0; i < 360; i++)
         {
-            transformedCircle[i].pos = transform.translate * transform.rotation * transform.scale * circle[i].pos;
+            transformedCircle[i].pos = circle[i].pos * transform.translate * transform.rotation * transform.scale;
         }
 
         for (int i = 0; i < 5; i++)
         {
-            transformedStar[i].pos = transform.translate * transform.rotation * transform.scale * star[i].pos;
+            transformedStar[i].pos = star[i].pos * transform.translate * transform.rotation * transform.scale;
         }
 
         
