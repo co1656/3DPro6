@@ -196,12 +196,12 @@ void Update()
         
         for (int i = 0; i < 360; i++)
         {
-            transformedCircle[i].pos = circle[i].pos * transform.translate * transform.rotation * transform.scale;
+            transformedCircle[i].pos = circle[i].pos * transform.rotation * transform.scale * transform.translate;
         }
 
         for (int i = 0; i < 5; i++)
         {
-            transformedStar[i].pos = star[i].pos * transform.translate * transform.rotation * transform.scale;
+            transformedStar[i].pos = star[i].pos * transform.rotation * transform.scale * transform.translate;
         }
 
         
